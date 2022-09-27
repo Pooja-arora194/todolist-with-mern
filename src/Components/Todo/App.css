@@ -1,0 +1,47 @@
+.editbtn {
+  color: #bb6a33;
+  margin: 5px;
+  cursor: pointer;
+ 
+}
+.deletebtn {
+  color:#bab936;
+  margin: 5px;
+  cursor: pointer;
+ 
+}
+
+.completebtn {
+  color:#22cba4;
+  margin: 5px;
+  cursor: pointer;
+
+
+}
+.container-fluid{
+  background-color: rgb(238, 201, 122);
+  height: 950px;
+}
+.card{
+  background-color: rgb(19 86 97);
+ 
+}
+.card-header h3{
+  color: #fff;
+}
+
+.list p{
+  color: #fff;
+}
+.card{
+  border-radius: 20px;
+  height: auto;
+}
+.card-body button{
+ background-color: rgb(255 214 128);
+ font-weight: bold;
+}
+
+.test{
+  text-decoration: line-through;
+}
