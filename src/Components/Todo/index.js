@@ -18,6 +18,7 @@ const Todo = () => {
         "Content-Type": "application/json"
       }
     });
+    
     const alldata = await res.json();
     dispatch({type:"initial",value:alldata})
 
@@ -30,43 +31,49 @@ const Todo = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   };
-
   const addinputdata = async() => {
-          const  name = inputval;
-          const res = await fetch("/add",{
-            method: "POST",
-            headers:{
-              "Content-Type": "application/json"
-            },
-            body:JSON.stringify({
-              name
-            })
-          });
-          const all = await res.json();
-          console.log(all)
-          
-          if(all.status === 'true'){
-           dispatch({ type: "add", value: name,id:all.data._id});
-            setInputval('')
-            }
-           
-          
-          
+    try{
+      const  name = inputval;
+      const res = await fetch("/add",{
+        method: "POST",
+        headers:{
+          "Content-Type": "application/json"
+        },
+        body:JSON.stringify({
+          name
+        })
+      });
+      const all = await res.json();
+      if(all.success){
+        dispatch({ type: "add", value: name,id:all.data._id});
+         setInputval('')
+         }
+    }
+      catch(error){
+            dispatch({
+              type: "Fail",
+          })
+      }  
     };
     
   const deleteFunc= async(id)=>{
     
-     const resp = await fetch(`deletedata/${id}`,{
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json"
-        }
-     });
-   
-        dispatch({ type: "delete", value: id });
+    try{
+        const resp = await fetch(`deletedata/${id}`,{
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json"
+          }
+        });
+          dispatch({ type: "delete", value: id });
+     }
+    catch(error){
+      dispatch({
+        type: "Fail",
+    })
+  }  
+ }   
         
-  }
-
   const editFunc=(element)=>{
     console.log(element);
     setisEdit({state:true,value:element.id})
@@ -75,39 +82,53 @@ const Todo = () => {
   }
 
   const editStateFun= async()=>{
-       console.log("isEdit", isEdit)  
-   const  name = inputval;
-    const res = await fetch(`editdata/${isEdit.value}`,{
-      method: "PUT",
-      headers:{
-        "Content-Type": "application/json"
-      },
-      body:JSON.stringify({
-        name
-      })
-    });
-    const data = await res.json();
-    console.log(data)
-    if(data.status === 'true'){
-          dispatch({ type: "edit", id: isEdit.value ,value:name })
-          setisEdit({state:false})
-          setInputval('')
-    }
+       //console.log("isEdit", isEdit)  
+       try{
+            const  name = inputval;
+            const res = await fetch(`editdata/${isEdit.value}`,{
+              method: "PUT",
+              headers:{
+                "Content-Type": "application/json"
+              },
+              body:JSON.stringify({
+                name
+              })
+            });
+          const data = await res.json();
+            if(data.success){
+              dispatch({ type: "edit", id: isEdit.value ,value:name })
+              setisEdit({state:false})
+              setInputval('')
+            }
+       }
+       catch(error){
+        dispatch({
+          type: "Fail",
+        })
+       }  
   }
-
 
   const handlecomplete = async(id) =>{
 
-    const res = await fetch(`handlecomplete/${id}`, {
-            method: "PUT",
-            headers:{
-              "Content-Type": "application/json"
-            }
-    });
-            const all = await res.json();
-            if(all.status === 'true'){
+       try{
+            const res = await fetch(`handlecomplete/${id}`, {
+              method: "PUT",
+              headers:{
+                "Content-Type": "application/json"
+              }
+          });
+          const all = await res.json();
+          if(all.success){
             dispatch({ type: "completed" ,value:id })
             }
+       } 
+       catch(error){
+          dispatch({
+            type: "Fail",
+        })
+      }  
+            
+          
   }
 
   
